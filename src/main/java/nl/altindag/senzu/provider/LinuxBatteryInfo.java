@@ -34,7 +34,9 @@ public class LinuxBatteryInfo extends TerminalBatteryInfoProvider {
 
     @Override
     Function<String, String> getMapper() {
-        return line -> line.split(":")[1].trim();
+        return line -> line.split(":")[1]
+                .trim()
+                .replace("%", "");
     }
 
 }
