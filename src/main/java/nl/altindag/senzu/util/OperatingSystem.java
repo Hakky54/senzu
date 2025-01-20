@@ -20,7 +20,11 @@ package nl.altindag.senzu.util;
  */
 public enum OperatingSystem {
 
-    MAC(new MacBatteryInfo()), LINUX(null), ANDROID(null), WINDOWS(null), UNKNOWN(null);
+    MAC(new MacBatteryInfo()),
+    LINUX(null),
+    ANDROID(null),
+    WINDOWS(new WindowsBatteryInfo()),
+    UNKNOWN(null);
 
     private final BatteryInfoProvider batteryInfoProvider;
 
