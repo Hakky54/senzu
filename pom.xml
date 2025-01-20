@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.hakky54</groupId>
-    <artifactId>battery</artifactId>
+    <artifactId>senzu</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <licenses>
@@ -40,16 +40,16 @@
         <version.maven-shade-plugin>3.6.0</version.maven-shade-plugin>
         <version.jacoco-maven-plugin>0.8.12</version.jacoco-maven-plugin>
         <version.graalvm>21.2.0</version.graalvm>
-        <application-main-class>nl.altindag.battery.App</application-main-class>
+        <application-main-class>nl.altindag.senzu.App</application-main-class>
         <version.license-maven-plugin>4.6</version.license-maven-plugin>
         <license.git.copyrightYears>2025</license.git.copyrightYears>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <scm>
-        <url>https://github.com/Hakky54/battery</url>
-        <connection>scm:git:git@github.com:Hakky54/battery.git</connection>
-        <developerConnection>scm:git:git@github.com:Hakky54/battery.git</developerConnection>
+        <url>https://github.com/Hakky54/senzu</url>
+        <connection>scm:git:git@github.com:Hakky54/senzu.git</connection>
+        <developerConnection>scm:git:git@github.com:Hakky54/senzu.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -140,7 +140,7 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>${version.maven-shade-plugin}</version>
                 <configuration>
-                    <finalName>battery</finalName>
+                    <finalName>senzu</finalName>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>${application-main-class}</mainClass>
@@ -268,7 +268,7 @@ limitations under the License.
                             <buildArgs>
                                 --no-fallback
                                 -H:ReflectionConfigurationResources=graalvm_config.json
-                                -H:Name=battery
+                                -H:Name=senzu
                             </buildArgs>
                         </configuration>
                     </plugin>

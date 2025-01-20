@@ -1,4 +1,4 @@
-# Battery 🔋
+# Senzu 🫘
 A CLI tool to get the battery percentage
 
 ## Installing
@@ -21,10 +21,10 @@ TODO
   
   ```text
   mvn clean install -Pnative-image \
-   && ./target/battery
+   && ./target/senzu
   ```
   
-  The os native executable binary will be available under the target directory having the file name `battery`
+  The os native executable binary will be available under the target directory having the file name `senzu`
 
 </details>
 
@@ -38,10 +38,10 @@ TODO
 
   ```text
   mvn clean install \
-   && java -jar target/battery.jar
+   && java -jar target/senzu.jar
   ```
 
-  The fat jar will be available under the target directory having the file name `battery.jar`
+  The fat jar will be available under the target directory having the file name `senzu.jar`
 
 </details>
 

@@ -13,23 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.altindag.battery.command;
+package nl.altindag.senzu;
 
-import nl.altindag.battery.util.OperatingSystem;
-import picocli.CommandLine.Command;
+import nl.altindag.senzu.command.BatteryInfoCommand;
+import picocli.CommandLine;
 
-@Command(
-        name = "battery",
-        description = "CLI tool to get the battery percentage",
-        mixinStandardHelpOptions = true
-)
-public class BatteryInfoCommand implements Runnable {
+public class App {
 
-    @Override
-    public void run() {
-        OperatingSystem operatingSystem = OperatingSystem.get();
-        String batteryLevel = operatingSystem.getBatteryInfoProvider().getBatteryLevel();
-        System.out.println(batteryLevel);
+    public static void main(String[] applicationArguments) {
+        new CommandLine(new BatteryInfoCommand())
+                .setCaseInsensitiveEnumValuesAllowed(true)
+                .execute(applicationArguments);
     }
 
 }
