@@ -15,8 +15,10 @@
  */
 package nl.altindag.senzu.provider;
 
+import java.util.Optional;
+
 public interface BatteryInfoProvider {
 
-    String getBatteryLevel();
+    Optional<String> getBatteryLevel();
 
 }

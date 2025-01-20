@@ -20,6 +20,7 @@ import nl.altindag.senzu.util.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -27,7 +28,7 @@ import java.util.stream.Stream;
 public abstract class TerminalBatteryInfoProvider implements BatteryInfoProvider {
 
     @Override
-    public String getBatteryLevel() {
+    public Optional<String> getBatteryLevel() {
         String[] command = getCommand();
         try(InputStream inputStream = createProcess(command).getInputStream()) {
             String content = IOUtils.getContent(inputStream);
@@ -37,9 +38,7 @@ public abstract class TerminalBatteryInfoProvider implements BatteryInfoProvider
                     .filter(line -> !line.isEmpty())
                     .filter(getFilter())
                     .map(getMapper())
-                    .findFirst()
-                    .orElse("Could not find battery information");
-
+                    .findFirst();
         } catch (IOException e) {
             throw new SenzuException(e);
         }

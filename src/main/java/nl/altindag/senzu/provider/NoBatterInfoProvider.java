@@ -15,6 +15,8 @@
  */
 package nl.altindag.senzu.provider;
 
+import java.util.Optional;
+
 public class NoBatterInfoProvider implements BatteryInfoProvider {
 
     private static final NoBatterInfoProvider INSTANCE = new NoBatterInfoProvider();
@@ -22,8 +24,8 @@ public class NoBatterInfoProvider implements BatteryInfoProvider {
     private NoBatterInfoProvider() {}
 
     @Override
-    public String getBatteryLevel() {
-        return "Could not find battery information";
+    public Optional<String> getBatteryLevel() {
+        return Optional.empty();
     }
 
     public static NoBatterInfoProvider getInstance() {

@@ -27,8 +27,11 @@ public class BatteryInfoCommand implements Runnable {
 
     @Override
     public void run() {
-        OperatingSystem operatingSystem = OperatingSystem.get();
-        String batteryLevel = operatingSystem.getBatteryInfoProvider().getBatteryLevel();
+        String batteryLevel = OperatingSystem.get()
+                .getBatteryInfoProvider()
+                .getBatteryLevel()
+                .orElse("Could not find battery information");
+
         System.out.println(batteryLevel);
     }
 
