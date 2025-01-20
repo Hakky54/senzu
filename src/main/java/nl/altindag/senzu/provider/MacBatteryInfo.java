@@ -20,11 +20,9 @@ import java.util.function.Predicate;
 
 public class MacBatteryInfo extends TerminalBatteryInfoProvider {
 
-    private static final String SYSTEM_POWER_INFORMATION_COMMAND = "system_profiler SPPowerDataType";
-
     @Override
     String[] getCommand() {
-        return new String[]{"bash", "-c", SYSTEM_POWER_INFORMATION_COMMAND};
+        return new String[]{"system_profiler", "SPPowerDataType"};
     }
 
     @Override
