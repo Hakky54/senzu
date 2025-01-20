@@ -16,6 +16,7 @@
 package nl.altindag.senzu.util;
 
 import nl.altindag.senzu.provider.BatteryInfoProvider;
+import nl.altindag.senzu.provider.LinuxBatteryInfo;
 import nl.altindag.senzu.provider.MacBatteryInfo;
 import nl.altindag.senzu.provider.NoBatterInfoProvider;
 import nl.altindag.senzu.provider.WindowsBatteryInfo;
@@ -26,7 +27,7 @@ import nl.altindag.senzu.provider.WindowsBatteryInfo;
 public enum OperatingSystem {
 
     MAC(new MacBatteryInfo()),
-    LINUX(NoBatterInfoProvider.getInstance()),
+    LINUX(new LinuxBatteryInfo()),
     ANDROID(NoBatterInfoProvider.getInstance()),
     WINDOWS(new WindowsBatteryInfo()),
     UNKNOWN(NoBatterInfoProvider.getInstance());

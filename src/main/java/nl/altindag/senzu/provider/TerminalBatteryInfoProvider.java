@@ -28,7 +28,7 @@ public abstract class TerminalBatteryInfoProvider implements BatteryInfoProvider
 
     @Override
     public String getBatteryLevel() {
-        String command = getCommand();
+        String[] command = getCommand();
         try(InputStream inputStream = createProcess(command).getInputStream()) {
             String content = IOUtils.getContent(inputStream);
 
@@ -45,7 +45,7 @@ public abstract class TerminalBatteryInfoProvider implements BatteryInfoProvider
         }
     }
 
-    private static Process createProcess(String command) {
+    private static Process createProcess(String[] command) {
         try {
             return Runtime.getRuntime().exec(command);
         } catch (IOException e) {
@@ -53,7 +53,7 @@ public abstract class TerminalBatteryInfoProvider implements BatteryInfoProvider
         }
     }
 
-    abstract String getCommand();
+    abstract String[] getCommand();
 
     abstract Predicate<String> getFilter();
 

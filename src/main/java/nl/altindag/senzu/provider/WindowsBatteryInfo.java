@@ -23,8 +23,8 @@ public class WindowsBatteryInfo extends TerminalBatteryInfoProvider {
     private static final String SYSTEM_POWER_INFORMATION_COMMAND = "WMIC PATH Win32_Battery Get EstimatedChargeRemaining";
 
     @Override
-    String getCommand() {
-        return SYSTEM_POWER_INFORMATION_COMMAND;
+    String[] getCommand() {
+        return new String[]{SYSTEM_POWER_INFORMATION_COMMAND};
     }
 
     @Override

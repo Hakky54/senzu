@@ -18,18 +18,18 @@ package nl.altindag.senzu.provider;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class MacBatteryInfo extends TerminalBatteryInfoProvider {
+public class LinuxBatteryInfo extends TerminalBatteryInfoProvider {
 
-    private static final String SYSTEM_POWER_INFORMATION_COMMAND = "system_profiler SPPowerDataType";
+    private static final String SYSTEM_POWER_INFORMATION_COMMAND = "upower -i /org/freedesktop/UPower/devices/battery_BAT0";
 
     @Override
     String[] getCommand() {
-        return new String[]{SYSTEM_POWER_INFORMATION_COMMAND};
+        return new String[]{"bash", "-c", SYSTEM_POWER_INFORMATION_COMMAND};
     }
 
     @Override
     Predicate<String> getFilter() {
-        return line -> line.contains("State of Charge (%):");
+        return line -> line.contains("percentage:");
     }
 
     @Override
