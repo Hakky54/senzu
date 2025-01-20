@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.altindag.senzu.util;
+package nl.altindag.senzu.exception;
 
-public interface BatteryInfoProvider {
+public class SenzuException extends RuntimeException{
 
-    String getBatteryLevel();
+    public SenzuException(Exception e) {
+        super(e);
+    }
 
 }

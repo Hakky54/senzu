@@ -13,31 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.altindag.senzu.util;
+package nl.altindag.senzu.provider;
+
+import nl.altindag.senzu.exception.SenzuException;
+import nl.altindag.senzu.util.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-@SuppressWarnings("SameParameterValue")
-public class WindowsBatteryInfo implements BatteryInfoProvider {
-
-    private static final String SYSTEM_POWER_INFORMATION_COMMAND = "WMIC PATH Win32_Battery Get EstimatedChargeRemaining";
+public abstract class TerminalBatteryInfoProvider implements BatteryInfoProvider {
 
     @Override
     public String getBatteryLevel() {
-        try(InputStream inputStream = createProcess(SYSTEM_POWER_INFORMATION_COMMAND).getInputStream()) {
+        String command = getCommand();
+        try(InputStream inputStream = createProcess(command).getInputStream()) {
             String content = IOUtils.getContent(inputStream);
 
             return Stream.of(content.split(System.lineSeparator()))
                     .map(String::trim)
                     .filter(line -> !line.isEmpty())
-                    .filter(line -> !line.contains("EstimatedChargeRemaining"))
+                    .filter(getFilter())
+                    .map(getMapper())
                     .findFirst()
                     .orElse("Could not find battery information");
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SenzuException(e);
         }
     }
 
@@ -45,8 +49,14 @@ public class WindowsBatteryInfo implements BatteryInfoProvider {
         try {
             return Runtime.getRuntime().exec(command);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SenzuException(e);
         }
     }
+
+    abstract String getCommand();
+
+    abstract Predicate<String> getFilter();
+
+    abstract Function<String, String> getMapper();
 
 }

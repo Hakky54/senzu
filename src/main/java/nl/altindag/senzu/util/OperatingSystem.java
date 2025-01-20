@@ -15,6 +15,10 @@
  */
 package nl.altindag.senzu.util;
 
+import nl.altindag.senzu.provider.BatteryInfoProvider;
+import nl.altindag.senzu.provider.MacBatteryInfo;
+import nl.altindag.senzu.provider.WindowsBatteryInfo;
+
 /**
  * @author Hakan Altindag
  */
