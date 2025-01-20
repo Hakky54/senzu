@@ -24,7 +24,7 @@ public class MacBatteryInfo extends TerminalBatteryInfoProvider {
 
     @Override
     String[] getCommand() {
-        return new String[]{SYSTEM_POWER_INFORMATION_COMMAND};
+        return new String[]{"bash", "-c", SYSTEM_POWER_INFORMATION_COMMAND};
     }
 
     @Override
