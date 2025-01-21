@@ -13,26 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.altindag.senzu.provider;
+package nl.altindag.senzu.provider.linux;
+
+import nl.altindag.senzu.provider.TerminalBatteryInfoProvider;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class MacBatteryInfo extends TerminalBatteryInfoProvider {
+public class Axp20xBatteryInfo extends TerminalBatteryInfoProvider {
+
+    private static final String BATTERY_INFORMATION_FILE = "/sys/class/power_supply/axp20x-battery/capacity";
 
     @Override
     protected String[] getCommand() {
-        return new String[]{"system_profiler", "SPPowerDataType"};
+        return new String[]{"bash", "-c", "cat", BATTERY_INFORMATION_FILE};
     }
 
     @Override
     protected Predicate<String> getFilter() {
-        return line -> line.contains("State of Charge (%):");
+        return line -> !line.contains("No such file or directory");
     }
 
     @Override
     protected Function<String, String> getMapper() {
-        return line -> line.split(":")[1].trim();
+        return Function.identity();
     }
 
 }

@@ -52,10 +52,10 @@ public abstract class TerminalBatteryInfoProvider implements BatteryInfoProvider
         }
     }
 
-    abstract String[] getCommand();
+    protected abstract String[] getCommand();
 
-    abstract Predicate<String> getFilter();
+    protected abstract Predicate<String> getFilter();
 
-    abstract Function<String, String> getMapper();
+    protected abstract Function<String, String> getMapper();
 
 }

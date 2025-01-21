@@ -15,28 +15,27 @@
  */
 package nl.altindag.senzu.provider;
 
-import java.util.function.Function;
-import java.util.function.Predicate;
+import nl.altindag.senzu.provider.linux.Axp20xBatteryInfo;
+import nl.altindag.senzu.provider.linux.UPowerBatteryInfo;
 
-public class LinuxBatteryInfo extends TerminalBatteryInfoProvider {
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-    private static final String SYSTEM_POWER_INFORMATION_COMMAND = "upower -i /org/freedesktop/UPower/devices/battery_BAT0";
+public class LinuxBatteryInfo implements BatteryInfoProvider{
 
-    @Override
-    String[] getCommand() {
-        return new String[]{"bash", "-c", SYSTEM_POWER_INFORMATION_COMMAND};
-    }
-
-    @Override
-    Predicate<String> getFilter() {
-        return line -> line.contains("percentage:");
-    }
+    private final List<TerminalBatteryInfoProvider> batteryInfoProviders = Arrays.asList(
+            new Axp20xBatteryInfo(),
+            new UPowerBatteryInfo()
+    );
 
     @Override
-    Function<String, String> getMapper() {
-        return line -> line.split(":")[1]
-                .trim()
-                .replace("%", "");
+    public Optional<String> getBatteryLevel() {
+        return batteryInfoProviders.stream()
+                .map(TerminalBatteryInfoProvider::getBatteryLevel)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
     }
 
 }

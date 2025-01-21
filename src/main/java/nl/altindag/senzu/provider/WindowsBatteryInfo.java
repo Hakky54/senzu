@@ -21,17 +21,17 @@ import java.util.function.Predicate;
 public class WindowsBatteryInfo extends TerminalBatteryInfoProvider {
 
     @Override
-    String[] getCommand() {
+    protected String[] getCommand() {
         return new String[]{"WMIC", "PATH", "Win32_Battery", "Get", "EstimatedChargeRemaining"};
     }
 
     @Override
-    Predicate<String> getFilter() {
+    protected Predicate<String> getFilter() {
         return line -> !line.contains("EstimatedChargeRemaining");
     }
 
     @Override
-    Function<String, String> getMapper() {
+    protected Function<String, String> getMapper() {
         return Function.identity();
     }
 
