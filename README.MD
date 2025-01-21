@@ -1,3 +1,6 @@
+[![Actions Status](https://github.com/Hakky54/senzu/workflows/Build/badge.svg)](https://github.com/Hakky54/senzu/actions)
+[![Apache2 license](https://img.shields.io/badge/license-Aache2.0-blue.svg)](https://github.com/Hakky54/sslcontext-kickstart/blob/master/LICENSE)
+
 # Senzu 🫘
 A CLI tool to get the battery percentage
 
