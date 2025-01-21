@@ -22,7 +22,6 @@ public class App {
 
     public static void main(String[] applicationArguments) {
         new CommandLine(new BatteryInfoCommand())
-                .setCaseInsensitiveEnumValuesAllowed(true)
                 .execute(applicationArguments);
     }
 

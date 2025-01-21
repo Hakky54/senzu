@@ -20,8 +20,7 @@ import picocli.CommandLine.Command;
 
 @Command(
         name = "senzu",
-        description = "CLI tool to get the battery percentage",
-        mixinStandardHelpOptions = true
+        description = "CLI tool to get the battery percentage"
 )
 public class BatteryInfoCommand implements Runnable {
 
