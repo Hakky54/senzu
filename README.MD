@@ -1,6 +1,9 @@
 # Senzu 🫘
 A CLI tool to get the battery percentage
 
+## Demo
+![alt text](https://github.com/Hakky54/senzu/blob/master/images/demo.gif?raw=true)
+
 ## Installing
 
 TODO
