@@ -15,6 +15,8 @@
  */
 package nl.altindag.senzu.util;
 
+import nl.altindag.senzu.exception.SenzuException;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,7 +40,7 @@ public final class IOUtils {
             return bufferedReader.lines()
                     .collect(Collectors.joining(System.lineSeparator()));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SenzuException(e);
         }
     }
 
