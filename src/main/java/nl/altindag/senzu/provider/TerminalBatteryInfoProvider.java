@@ -39,7 +39,7 @@ public interface TerminalBatteryInfoProvider extends BatteryInfoProvider {
                     .filter(getFilter())
                     .map(getMapper())
                     .findFirst();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new SenzuException(e);
         }
     }
