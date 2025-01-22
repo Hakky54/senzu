@@ -1,4 +1,5 @@
 [![Actions Status](https://github.com/Hakky54/senzu/workflows/Build/badge.svg)](https://github.com/Hakky54/senzu/actions)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=io.github.hakky54%3Asenzu&metric=coverage)](https://sonarcloud.io/dashboard?id=io.github.hakky54%3Asenzu)
 [![Apache2 license](https://img.shields.io/badge/license-Aache2.0-blue.svg)](https://github.com/Hakky54/sslcontext-kickstart/blob/master/LICENSE)
 
 # Senzu 🫘
