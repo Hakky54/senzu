@@ -80,6 +80,25 @@ class AppShould {
         }
     }
 
+    @Test
+    void notProvideBatteryLevelForAndroid() {
+        System.setProperty("java.vendor", "the android project");
+        System.setProperty("java.vm.vendor", "the android project");
+        System.getProperty("java.runtime.name", "android runtime");
+
+        System.setProperty("os.name", "Linux");
+
+        try(ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
+            BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();
+            CommandLine cmd = new CommandLine(batteryInfoCommand);
+            cmd.execute();
+
+            assertThat(consoleCaptor.getStandardOutput()).contains("Could not find battery information");
+        } finally {
+            resetOsName();
+        }
+    }
+
     void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) {
         assertBatteryLevel(osName, mockTerminalOutputFile, mockedArguments, logs -> {
             assertThat(logs.get(0))
