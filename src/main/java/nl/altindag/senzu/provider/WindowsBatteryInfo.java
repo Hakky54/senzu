@@ -18,20 +18,20 @@ package nl.altindag.senzu.provider;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class WindowsBatteryInfo extends TerminalBatteryInfoProvider {
+public class WindowsBatteryInfo implements TerminalBatteryInfoProvider {
 
     @Override
-    protected String[] getCommand() {
+    public String[] getCommand() {
         return new String[]{"WMIC", "PATH", "Win32_Battery", "Get", "EstimatedChargeRemaining"};
     }
 
     @Override
-    protected Predicate<String> getFilter() {
+    public Predicate<String> getFilter() {
         return line -> !line.contains("EstimatedChargeRemaining");
     }
 
     @Override
-    protected Function<String, String> getMapper() {
+    public Function<String, String> getMapper() {
         return Function.identity();
     }
 

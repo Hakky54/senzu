@@ -20,22 +20,22 @@ import nl.altindag.senzu.provider.TerminalBatteryInfoProvider;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class UPowerBatteryInfo extends TerminalBatteryInfoProvider {
+public class UPowerBatteryInfo implements TerminalBatteryInfoProvider {
 
     private static final String SYSTEM_POWER_INFORMATION_COMMAND = "upower -i /org/freedesktop/UPower/devices/battery_BAT0";
 
     @Override
-    protected String[] getCommand() {
+    public String[] getCommand() {
         return new String[]{"bash", "-c", SYSTEM_POWER_INFORMATION_COMMAND};
     }
 
     @Override
-    protected Predicate<String> getFilter() {
+    public Predicate<String> getFilter() {
         return line -> line.contains("percentage:");
     }
 
     @Override
-    protected Function<String, String> getMapper() {
+    public Function<String, String> getMapper() {
         return line -> line.split(":")[1]
                 .trim()
                 .replace("%", "");

@@ -25,10 +25,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public abstract class TerminalBatteryInfoProvider implements BatteryInfoProvider {
+public interface TerminalBatteryInfoProvider extends BatteryInfoProvider {
 
     @Override
-    public Optional<String> getBatteryLevel() {
+    default Optional<String> getBatteryLevel() {
         String[] command = getCommand();
         try(InputStream inputStream = createProcess(command).getInputStream()) {
             String content = IOUtils.getContent(inputStream);
@@ -44,18 +44,18 @@ public abstract class TerminalBatteryInfoProvider implements BatteryInfoProvider
         }
     }
 
-    private static Process createProcess(String[] command) {
+    static Process createProcess(String[] command) {
         try {
-            return Runtime.getRuntime().exec(command);
+            return new ProcessBuilder(command).start();
         } catch (IOException e) {
             throw new SenzuException(e);
         }
     }
 
-    protected abstract String[] getCommand();
+    abstract String[] getCommand();
 
-    protected abstract Predicate<String> getFilter();
+    abstract Predicate<String> getFilter();
 
-    protected abstract Function<String, String> getMapper();
+    abstract Function<String, String> getMapper();
 
 }

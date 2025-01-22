@@ -20,22 +20,22 @@ import nl.altindag.senzu.provider.TerminalBatteryInfoProvider;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class Axp20xBatteryInfo extends TerminalBatteryInfoProvider {
+public class Axp20xBatteryInfo implements TerminalBatteryInfoProvider {
 
     private static final String SYSTEM_POWER_INFORMATION_COMMAND = "cat /sys/class/power_supply/axp20x-battery/capacity";
 
     @Override
-    protected String[] getCommand() {
+    public String[] getCommand() {
         return new String[]{"bash", "-c", SYSTEM_POWER_INFORMATION_COMMAND};
     }
 
     @Override
-    protected Predicate<String> getFilter() {
+    public Predicate<String> getFilter() {
         return line -> !line.contains("No such file or directory");
     }
 
     @Override
-    protected Function<String, String> getMapper() {
+    public Function<String, String> getMapper() {
         return Function.identity();
     }
 

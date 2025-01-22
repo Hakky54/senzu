@@ -17,6 +17,7 @@ package nl.altindag.senzu;
 
 import nl.altindag.console.ConsoleCaptor;
 import nl.altindag.senzu.command.BatteryInfoCommand;
+import nl.altindag.senzu.provider.TerminalBatteryInfoProvider;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import picocli.CommandLine;
@@ -42,14 +43,11 @@ class AppShould {
     void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) throws IOException {
         InputStream mac = getResourceAsStream(mockTerminalOutputFile);
 
-        try (MockedStatic<Runtime> runtimeMockedStatic = mockStatic(Runtime.class);
+        try (MockedStatic<TerminalBatteryInfoProvider> runtimeMockedStatic = mockStatic(TerminalBatteryInfoProvider.class);
              ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
 
-            Runtime runtime = mock(Runtime.class);
             Process process = mock(Process.class);
-
-            runtimeMockedStatic.when(Runtime::getRuntime).thenReturn(runtime);
-            when(runtime.exec(mockedArguments)).thenReturn(process);
+            runtimeMockedStatic.when(() -> TerminalBatteryInfoProvider.createProcess(mockedArguments)).thenReturn(process);
             when(process.getInputStream()).thenReturn(mac);
 
             BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();

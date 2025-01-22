@@ -18,20 +18,20 @@ package nl.altindag.senzu.provider;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class MacBatteryInfo extends TerminalBatteryInfoProvider {
+public class MacBatteryInfo implements TerminalBatteryInfoProvider {
 
     @Override
-    protected String[] getCommand() {
+    public String[] getCommand() {
         return new String[]{"system_profiler", "SPPowerDataType"};
     }
 
     @Override
-    protected Predicate<String> getFilter() {
+    public Predicate<String> getFilter() {
         return line -> line.contains("State of Charge (%):");
     }
 
     @Override
-    protected Function<String, String> getMapper() {
+    public Function<String, String> getMapper() {
         return line -> line.split(":")[1].trim();
     }
 
