@@ -52,10 +52,10 @@ public interface TerminalBatteryInfoProvider extends BatteryInfoProvider {
         }
     }
 
-    abstract String[] getCommand();
+    String[] getCommand();
 
-    abstract Predicate<String> getFilter();
+    Predicate<String> getFilter();
 
-    abstract Function<String, String> getMapper();
+    Function<String, String> getMapper();
 
 }

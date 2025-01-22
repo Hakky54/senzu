@@ -1,0 +1,25 @@
+  native-path:          BAT0
+  vendor:               Celxpert
+  model:                5B10V98091
+  serial:               3821
+  power supply:         yes
+  updated:              Sunday 10 April 2022 09:47:01 PM (38 seconds ago)
+  has history:          yes
+  has statistics:       yes
+  battery
+    present:             yes
+    rechargeable:        yes
+    state:               charging
+    warning-level:       none
+    energy:              65.4 Wh
+    energy-empty:        0 Wh
+    energy-full:         328.96 Wh
+    energy-full-design:  80.4 Wh
+    energy-rate:         8.603 W
+    voltage:             17.38 V
+    percentage:          96%
+    capacity:            83.6567%
+    technology:          lithium-polymer
+    icon-name:          'battery-full-charging-symbolic'
+  History (rate):
+    1649607421	8.603	charging

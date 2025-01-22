@@ -22,11 +22,9 @@ import java.util.function.Predicate;
 
 public class Axp20xBatteryInfo implements TerminalBatteryInfoProvider {
 
-    private static final String SYSTEM_POWER_INFORMATION_COMMAND = "cat /sys/class/power_supply/axp20x-battery/capacity";
-
     @Override
     public String[] getCommand() {
-        return new String[]{"bash", "-c", SYSTEM_POWER_INFORMATION_COMMAND};
+        return new String[]{"bash", "-c", "cat /sys/class/power_supply/axp20x-battery/capacity"};
     }
 
     @Override

@@ -22,8 +22,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import picocli.CommandLine;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,21 +48,33 @@ class AppShould {
         assertBatteryLevel("Windows", "terminal-output/windows.txt", new String[]{"WMIC", "PATH", "Win32_Battery", "Get", "EstimatedChargeRemaining"});
     }
 
+    @Test
+    void provideBatteryLevelForLinuxWithUPower() {
+        assertBatteryLevel("Linux", "terminal-output/linux/upower.txt", new String[]{"bash", "-c", "upower -i /org/freedesktop/UPower/devices/battery_BAT0"});
+    }
+
     void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) {
-        InputStream mac = getResourceAsStream(mockTerminalOutputFile);
+        System.setProperty("os.name", osName);
+        InputStream inputStream = getResourceAsStream(mockTerminalOutputFile);
 
-        try (MockedStatic<TerminalBatteryInfoProvider> runtimeMockedStatic = mockStatic(TerminalBatteryInfoProvider.class);
+        Process process = mock(Process.class);
+        Process toBeIgnoredProcess = mock(Process.class);
+        when(process.getInputStream()).thenReturn(inputStream);
+        when(toBeIgnoredProcess.getInputStream()).thenReturn(new ByteArrayInputStream("".getBytes(StandardCharsets.UTF_8)));
+
+        try (MockedStatic<TerminalBatteryInfoProvider> mockedStatic = mockStatic(TerminalBatteryInfoProvider.class, invocationOnMock -> {
+            Method method = invocationOnMock.getMethod();
+            if (method.getName().equals("createProcess")
+                    && Arrays.asList((Object[]) invocationOnMock.getArguments()[0]).containsAll(Arrays.asList(mockedArguments))) {
+                return process;
+            } else {
+                return toBeIgnoredProcess;
+            }
+        });
              ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
-
-            Process process = mock(Process.class);
-            runtimeMockedStatic.when(() -> TerminalBatteryInfoProvider.createProcess(mockedArguments)).thenReturn(process);
-            when(process.getInputStream()).thenReturn(mac);
 
             BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();
             CommandLine cmd = new CommandLine(batteryInfoCommand);
-
-            System.setProperty("os.name", osName);
-
             cmd.execute();
 
             List<String> standardOutput = consoleCaptor.getStandardOutput();

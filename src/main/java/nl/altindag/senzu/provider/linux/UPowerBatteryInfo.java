@@ -22,11 +22,9 @@ import java.util.function.Predicate;
 
 public class UPowerBatteryInfo implements TerminalBatteryInfoProvider {
 
-    private static final String SYSTEM_POWER_INFORMATION_COMMAND = "upower -i /org/freedesktop/UPower/devices/battery_BAT0";
-
     @Override
     public String[] getCommand() {
-        return new String[]{"bash", "-c", SYSTEM_POWER_INFORMATION_COMMAND};
+        return new String[]{"bash", "-c", "upower -i /org/freedesktop/UPower/devices/battery_BAT0"};
     }
 
     @Override
