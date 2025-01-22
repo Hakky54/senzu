@@ -33,6 +33,7 @@
         <version.picocli>4.7.6</version.picocli>
         <version.junit>5.11.4</version.junit>
         <version.assertj-core>3.27.0</version.assertj-core>
+        <version.mockito>4.11.0</version.mockito>
         <version.consolecaptor>1.0.3</version.consolecaptor>
         <version.maven-compiler-plugin>3.13.0</version.maven-compiler-plugin>
         <version.maven-surefire-plugin>3.5.2</version.maven-surefire-plugin>
@@ -82,6 +83,12 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${version.assertj-core}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${version.mockito}</version>
             <scope>test</scope>
         </dependency>
 

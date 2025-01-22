@@ -1,0 +1,76 @@
+Power:
+
+    Battery Information:
+
+      Model Information:
+          Serial Number: QWERTYUIOPASDFGHJ
+          Manufacturer: SMP
+          Device Name: 123qwe45
+          Pack Lot Code: 0
+          PCB Lot Code: 0
+          Firmware Version: 0b00
+          Hardware Revision: 300
+          Cell Revision: 809
+      Charge Information:
+          The battery’s charge is below the warning level: No
+          Fully Charged: Yes
+          Charging: No
+          Full Charge Capacity (mAh): 7485
+          State of Charge (%): 100
+      Health Information:
+          Cycle Count: 248
+          Condition: Normal
+
+    System Power Settings:
+
+      AC Power:
+          System Sleep Timer (Minutes): 1
+          Disk Sleep Timer (Minutes): 10
+          Display Sleep Timer (Minutes): 10
+          Wake on AC Change: No
+          Wake on Clamshell Open: Yes
+          Wake on LAN: Yes
+          Current Power Source: Yes
+          Display Sleep Uses Dim: Yes
+          Hibernate Mode: 3
+          Low Power Mode: No
+          Prioritize Network Reachability Over Sleep: No
+      Battery Power:
+          System Sleep Timer (Minutes): 1
+          Disk Sleep Timer (Minutes): 10
+          Display Sleep Timer (Minutes): 2
+          Wake on AC Change: No
+          Wake on Clamshell Open: Yes
+          Wake on LAN: No
+          Display Sleep Uses Dim: Yes
+          Hibernate Mode: 3
+          Low Power Mode: No
+          Prioritize Network Reachability Over Sleep: No
+          Reduce Brightness: Yes
+
+    Hardware Configuration:
+
+      UPS Installed: No
+
+    AC Charger Information:
+
+      Connected: Yes
+      ID: 0x7002
+      Wattage (W): 94
+      Family: 0xe000400a
+      Serial Number: MNBVCXZLKJHGFDSAP
+      Name: 96W USB-C Power Adapter
+      Manufacturer: Apple Inc.
+      Hardware Version: 1,0
+      Firmware Version: 1234567
+      Charging: No
+
+    Power Events:
+
+        Next Scheduled Events:
+
+              appPID: 479
+              Type: Wake
+              Scheduled By: com.apple.alarm.user-invisible-com.apple.calaccessd.travelEngine.periodicRefreshTimer
+              Time: 22/01/2025, 16:27
+              UserVisible: 0

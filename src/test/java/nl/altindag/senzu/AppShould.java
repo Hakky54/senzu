@@ -18,20 +18,45 @@ package nl.altindag.senzu;
 import nl.altindag.console.ConsoleCaptor;
 import nl.altindag.senzu.command.BatteryInfoCommand;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import picocli.CommandLine;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 class AppShould {
 
-    @Test
-    void provideBatteryLevel() {
-        BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();
-        CommandLine cmd = new CommandLine(batteryInfoCommand);
+    private static final String ORIGINAL_OS_NAME = System.getProperty("os.name");
 
-        try (ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
+    @Test
+    void provideBatteryLevelForMac() throws IOException {
+        assertBatteryLevel("Mac OS X", "terminal-output/mac.txt", new String[]{"system_profiler", "SPPowerDataType"});
+    }
+
+    void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) throws IOException {
+        InputStream mac = getResourceAsStream(mockTerminalOutputFile);
+
+        try (MockedStatic<Runtime> runtimeMockedStatic = mockStatic(Runtime.class);
+             ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
+
+            Runtime runtime = mock(Runtime.class);
+            Process process = mock(Process.class);
+
+            runtimeMockedStatic.when(Runtime::getRuntime).thenReturn(runtime);
+            when(runtime.exec(mockedArguments)).thenReturn(process);
+            when(process.getInputStream()).thenReturn(mac);
+
+            BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();
+            CommandLine cmd = new CommandLine(batteryInfoCommand);
+
+            System.setProperty("os.name", osName);
+
             cmd.execute();
 
             List<String> standardOutput = consoleCaptor.getStandardOutput();
@@ -41,7 +66,17 @@ class AppShould {
                     .doesNotContain("Could not find battery information")
                     .containsOnlyDigits()
                     .hasSizeBetween(1, 3);
+        } finally {
+            resetOsName();
         }
+    }
+
+    private static InputStream getResourceAsStream(String path) {
+        return Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+    }
+
+    private static void resetOsName() {
+        System.setProperty("os.name", ORIGINAL_OS_NAME);
     }
 
 }
