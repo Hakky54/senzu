@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -56,12 +57,13 @@ class TerminalBatteryInfoProviderShould {
         InputStream inputStream = spy(getResourceAsStream("terminal-output/mac.txt"));
         doThrow(new IOException("KABOOM!")).when(inputStream).close();
 
+        ProcessBuilder processBuilder = mock(ProcessBuilder.class);
         Process process = mock(Process.class);
+        when(processBuilder.start()).thenReturn(process);
         when(process.getInputStream()).thenReturn(inputStream);
 
         try (MockedStatic<TerminalBatteryInfoProvider> mockedStatic = mockStatic(TerminalBatteryInfoProvider.class)) {
-
-            mockedStatic.when(() -> TerminalBatteryInfoProvider.createProcess(any(String[].class))).thenReturn(process);
+            mockedStatic.when(() -> TerminalBatteryInfoProvider.createProcess(any(String[].class))).thenReturn(processBuilder);
 
             assertThatThrownBy(batteryInfoProvider::getBatteryLevel)
                     .isInstanceOf(SenzuException.class)
@@ -70,6 +72,12 @@ class TerminalBatteryInfoProviderShould {
             resetOsName();
         }
 
+    }
+
+    @Test
+    void createProcessBuilder() {
+        ProcessBuilder process = TerminalBatteryInfoProvider.createProcess(new String[]{""});
+        assertThat(process).isNotNull();
     }
 
     private static InputStream getResourceAsStream(String path) {

@@ -30,7 +30,7 @@ public interface TerminalBatteryInfoProvider extends BatteryInfoProvider {
     @Override
     default Optional<String> getBatteryLevel() {
         String[] command = getCommand();
-        try(InputStream inputStream = createProcess(command).getInputStream()) {
+        try(InputStream inputStream = createProcess(command).start().getInputStream()) {
             String content = IOUtils.getContent(inputStream);
 
             return Stream.of(content.split(System.lineSeparator()))
@@ -44,12 +44,11 @@ public interface TerminalBatteryInfoProvider extends BatteryInfoProvider {
         }
     }
 
-    static Process createProcess(String[] command) {
-        try {
-            return new ProcessBuilder(command).start();
-        } catch (IOException e) {
-            throw new SenzuException(e);
-        }
+    /**
+     * Wrapped for unit testing
+     */
+    static ProcessBuilder createProcess(String[] command) {
+        return new ProcessBuilder(command);
     }
 
     String[] getCommand();
