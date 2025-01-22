@@ -28,6 +28,7 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -59,6 +60,21 @@ class AppShould {
     }
 
     void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) {
+        assertBatteryLevel(osName, mockTerminalOutputFile, mockedArguments, logs -> {
+            assertThat(logs.get(0))
+                    .doesNotContain("Could not find battery information")
+                    .containsOnlyDigits()
+                    .hasSizeBetween(1, 3);
+        });
+    }
+
+    @Test
+    void notProvideBatteryLevelForLinuxWithWhileNotHavingAxp20x() {
+        assertBatteryLevel("Linux", "terminal-output/linux/no-axp20x.txt", new String[]{"bash", "-c", "cat /sys/class/power_supply/axp20x-battery/capacity"},
+                logs -> assertThat(logs).contains("Could not find battery information"));
+    }
+
+    void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments, Consumer<List<String>> assertion) {
         System.setProperty("os.name", osName);
         InputStream inputStream = getResourceAsStream(mockTerminalOutputFile);
 
@@ -84,11 +100,7 @@ class AppShould {
 
             List<String> standardOutput = consoleCaptor.getStandardOutput();
             assertThat(standardOutput).hasSize(1);
-
-            assertThat(standardOutput.get(0))
-                    .doesNotContain("Could not find battery information")
-                    .containsOnlyDigits()
-                    .hasSizeBetween(1, 3);
+            assertion.accept(standardOutput);
         } finally {
             resetOsName();
         }
