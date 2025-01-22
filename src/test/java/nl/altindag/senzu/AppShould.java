@@ -92,16 +92,16 @@ class AppShould {
         systemProperties.put("java.vm.vendor", "the android project");
         systemProperties.put("java.runtime.name", "android runtime");
 
-        systemProperties.entrySet().forEach(entry -> {
-            System.setProperty(entry.getKey(), entry.getValue());
-            try(ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
+        systemProperties.forEach((key, value) -> {
+            System.setProperty(key, value);
+            try (ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
                 BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();
                 CommandLine cmd = new CommandLine(batteryInfoCommand);
                 cmd.execute();
 
                 assertThat(consoleCaptor.getStandardOutput()).contains("Could not find battery information");
             } finally {
-                System.clearProperty(entry.getKey());
+                System.clearProperty(key);
             }
         });
 
