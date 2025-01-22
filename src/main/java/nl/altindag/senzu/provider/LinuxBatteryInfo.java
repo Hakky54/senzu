@@ -25,8 +25,8 @@ import java.util.Optional;
 public class LinuxBatteryInfo implements BatteryInfoProvider{
 
     private final List<TerminalBatteryInfoProvider> batteryInfoProviders = Arrays.asList(
-            new Axp20xBatteryInfo(),
-            new UPowerBatteryInfo()
+            new UPowerBatteryInfo(),
+            new Axp20xBatteryInfo()
     );
 
     @Override
