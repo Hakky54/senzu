@@ -28,7 +28,9 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -83,21 +85,27 @@ class AppShould {
 
     @Test
     void notProvideBatteryLevelForAndroid() {
-        System.setProperty("java.vendor", "the android project");
-        System.setProperty("java.vm.vendor", "the android project");
-        System.getProperty("java.runtime.name", "android runtime");
-
         System.setProperty("os.name", "Linux");
 
-        try(ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
-            BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();
-            CommandLine cmd = new CommandLine(batteryInfoCommand);
-            cmd.execute();
+        Map<String, String> systemProperties = new HashMap<>();
+        systemProperties.put("java.vendor", "the android project");
+        systemProperties.put("java.vm.vendor", "the android project");
+        systemProperties.put("java.runtime.name", "android runtime");
 
-            assertThat(consoleCaptor.getStandardOutput()).contains("Could not find battery information");
-        } finally {
-            resetOsName();
-        }
+        systemProperties.entrySet().forEach(entry -> {
+            System.setProperty(entry.getKey(), entry.getValue());
+            try(ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
+                BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();
+                CommandLine cmd = new CommandLine(batteryInfoCommand);
+                cmd.execute();
+
+                assertThat(consoleCaptor.getStandardOutput()).contains("Could not find battery information");
+            } finally {
+                System.clearProperty(entry.getKey());
+            }
+        });
+
+        resetOsName();
     }
 
     void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) throws IOException {
