@@ -53,6 +53,11 @@ class AppShould {
         assertBatteryLevel("Linux", "terminal-output/linux/upower.txt", new String[]{"bash", "-c", "upower -i /org/freedesktop/UPower/devices/battery_BAT0"});
     }
 
+    @Test
+    void provideBatteryLevelForLinuxWithAxp20x() {
+        assertBatteryLevel("Linux", "terminal-output/linux/axp20x.txt", new String[]{"bash", "-c", "cat /sys/class/power_supply/axp20x-battery/capacity"});
+    }
+
     void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) {
         System.setProperty("os.name", osName);
         InputStream inputStream = getResourceAsStream(mockTerminalOutputFile);
