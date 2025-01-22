@@ -36,11 +36,16 @@ class AppShould {
     private static final String ORIGINAL_OS_NAME = System.getProperty("os.name");
 
     @Test
-    void provideBatteryLevelForMac() throws IOException {
+    void provideBatteryLevelForMac() {
         assertBatteryLevel("Mac OS X", "terminal-output/mac.txt", new String[]{"system_profiler", "SPPowerDataType"});
     }
 
-    void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) throws IOException {
+    @Test
+    void provideBatteryLevelForWindows() {
+        assertBatteryLevel("Windows", "terminal-output/windows.txt", new String[]{"WMIC", "PATH", "Win32_Battery", "Get", "EstimatedChargeRemaining"});
+    }
+
+    void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) {
         InputStream mac = getResourceAsStream(mockTerminalOutputFile);
 
         try (MockedStatic<TerminalBatteryInfoProvider> runtimeMockedStatic = mockStatic(TerminalBatteryInfoProvider.class);
