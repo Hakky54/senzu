@@ -59,6 +59,27 @@ class AppShould {
         assertBatteryLevel("Linux", "terminal-output/linux/axp20x.txt", new String[]{"bash", "-c", "cat /sys/class/power_supply/axp20x-battery/capacity"});
     }
 
+    @Test
+    void notProvideBatteryLevelForLinuxWithWhileNotHavingAxp20x() {
+        assertBatteryLevel("Linux", "terminal-output/linux/no-axp20x.txt", new String[]{"bash", "-c", "cat /sys/class/power_supply/axp20x-battery/capacity"},
+                logs -> assertThat(logs).contains("Could not find battery information"));
+    }
+
+    @Test
+    void notProvideBatteryLevelForUnknownOs() {
+        System.setProperty("os.name", "Magic OS");
+
+        try(ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
+            BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();
+            CommandLine cmd = new CommandLine(batteryInfoCommand);
+            cmd.execute();
+
+            assertThat(consoleCaptor.getStandardOutput()).contains("Could not find battery information");
+        } finally {
+            resetOsName();
+        }
+    }
+
     void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments) {
         assertBatteryLevel(osName, mockTerminalOutputFile, mockedArguments, logs -> {
             assertThat(logs.get(0))
@@ -66,12 +87,6 @@ class AppShould {
                     .containsOnlyDigits()
                     .hasSizeBetween(1, 3);
         });
-    }
-
-    @Test
-    void notProvideBatteryLevelForLinuxWithWhileNotHavingAxp20x() {
-        assertBatteryLevel("Linux", "terminal-output/linux/no-axp20x.txt", new String[]{"bash", "-c", "cat /sys/class/power_supply/axp20x-battery/capacity"},
-                logs -> assertThat(logs).contains("Could not find battery information"));
     }
 
     void assertBatteryLevel(String osName, String mockTerminalOutputFile, String[] mockedArguments, Consumer<List<String>> assertion) {
