@@ -22,6 +22,9 @@ import java.util.function.Predicate;
 
 public class UPowerBatteryInfo implements TerminalBatteryInfoProvider {
 
+    private static final Predicate<String> CONTAINS_PERCENTAGE_KEY = line -> line.contains("percentage:");
+    private static final Predicate<String> DOES_NOT_CONTAINS_ZERO_PERCENTAGE_VALUE = line -> !line.contains("0% (should be ignored)");
+
     @Override
     public String[] getCommand() {
         return new String[]{"bash", "-c", "upower -i /org/freedesktop/UPower/devices/battery_BAT0"};
@@ -29,7 +32,7 @@ public class UPowerBatteryInfo implements TerminalBatteryInfoProvider {
 
     @Override
     public Predicate<String> getFilter() {
-        return line -> line.contains("percentage:");
+        return CONTAINS_PERCENTAGE_KEY.and(DOES_NOT_CONTAINS_ZERO_PERCENTAGE_VALUE);
     }
 
     @Override

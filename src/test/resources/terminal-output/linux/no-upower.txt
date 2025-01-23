@@ -1,0 +1,10 @@
+  native-path:          (null)
+  power supply:         no
+  updated:              Thu 01 Jan 1970 01:00:00 AM CET (1737620337 seconds ago)
+  has history:          no
+  has statistics:       no
+  unknown
+    warning-level:       unknown
+    battery-level:       unknown
+    percentage:          0% (should be ignored)
+    icon-name:          '(null)'

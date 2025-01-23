@@ -153,6 +153,51 @@ class AppShould {
         }
     }
 
+    @Test
+    void returnAxp20xBatteryLevelEvenThoughUpowerReturnsZeroBatteryLevel() throws IOException {
+        System.setProperty("os.name", "Linux");
+        InputStream noUpowerInputStream = getResourceAsStream("terminal-output/linux/no-upower.txt");
+        InputStream axp20xInputStream = getResourceAsStream("terminal-output/linux/axp20x.txt");
+
+        ProcessBuilder noUpowerProcessBuilder = mock(ProcessBuilder.class);
+        ProcessBuilder axp20xProcessBuilder = mock(ProcessBuilder.class);
+        Process noUpowerProcess = mock(Process.class);
+        Process axp20xProcess = mock(Process.class);
+        when(noUpowerProcessBuilder.start()).thenReturn(noUpowerProcess);
+        when(noUpowerProcess.getInputStream()).thenReturn(noUpowerInputStream);
+        when(axp20xProcessBuilder.start()).thenReturn(axp20xProcess);
+        when(axp20xProcess.getInputStream()).thenReturn(axp20xInputStream);
+
+        try (MockedStatic<TerminalBatteryInfoProvider> mockedStatic = mockStatic(TerminalBatteryInfoProvider.class, invocationOnMock -> {
+            Method method = invocationOnMock.getMethod();
+            if (method.getName().equals("createProcess")
+                    && Arrays.asList((Object[]) invocationOnMock.getArguments()[0]).containsAll(Arrays.asList("bash", "-c", "upower -i /org/freedesktop/UPower/devices/battery_BAT0"))) {
+                return noUpowerProcessBuilder;
+            } else if (method.getName().equals("createProcess")
+                    && Arrays.asList((Object[]) invocationOnMock.getArguments()[0]).containsAll(Arrays.asList("bash", "-c", "cat /sys/class/power_supply/axp20x-battery/capacity"))) {
+                return axp20xProcessBuilder;
+            } else {
+                throw new RuntimeException("should fail");
+            }
+        });
+             ConsoleCaptor consoleCaptor = new ConsoleCaptor()) {
+
+            BatteryInfoCommand batteryInfoCommand = new BatteryInfoCommand();
+            CommandLine cmd = new CommandLine(batteryInfoCommand);
+            cmd.execute();
+
+            List<String> standardOutput = consoleCaptor.getStandardOutput();
+            assertThat(standardOutput).hasSize(1);
+
+            assertThat(standardOutput.get(0))
+                    .doesNotContain("Could not find battery information")
+                    .containsOnlyDigits()
+                    .hasSizeBetween(1, 3);
+        } finally {
+            resetOsName();
+        }
+    }
+
     private static InputStream getResourceAsStream(String path) {
         return Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
     }
