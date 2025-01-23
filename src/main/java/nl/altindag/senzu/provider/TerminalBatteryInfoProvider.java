@@ -18,7 +18,6 @@ package nl.altindag.senzu.provider;
 import nl.altindag.senzu.exception.SenzuException;
 import nl.altindag.senzu.util.IOUtils;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.function.Function;
