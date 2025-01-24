@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public class LinuxBatteryInfo implements BatteryInfoProvider{
 
-    private final List<TerminalBatteryInfoProvider> batteryInfoProviders = Arrays.asList(
+    private final List<BatteryInfoProvider> batteryInfoProviders = Arrays.asList(
             new UPowerBatteryInfo(),
             new Axp20xBatteryInfo()
     );
@@ -32,7 +32,7 @@ public class LinuxBatteryInfo implements BatteryInfoProvider{
     @Override
     public Optional<String> getBatteryLevel() {
         return batteryInfoProviders.stream()
-                .map(TerminalBatteryInfoProvider::getBatteryLevel)
+                .map(BatteryInfoProvider::getBatteryLevel)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .findFirst();
