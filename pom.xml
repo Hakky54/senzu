@@ -42,7 +42,7 @@
         <version.jacoco-maven-plugin>0.8.12</version.jacoco-maven-plugin>
         <version.graalvm>21.2.0</version.graalvm>
         <application-main-class>nl.altindag.senzu.App</application-main-class>
-        <version.license-maven-plugin>4.6</version.license-maven-plugin>
+        <version.license-maven-plugin>5.0.0</version.license-maven-plugin>
         <license.git.copyrightYears>2025</license.git.copyrightYears>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
