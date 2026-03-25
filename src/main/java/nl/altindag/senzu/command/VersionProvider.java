@@ -15,25 +15,15 @@
  */
 package nl.altindag.senzu.command;
 
-import nl.altindag.senzu.util.OperatingSystem;
-import picocli.CommandLine.Command;
+import picocli.CommandLine;
 
-@Command(
-        name = "senzu",
-        description = "CLI tool to get the battery percentage",
-        mixinStandardHelpOptions = true,
-        versionProvider = VersionProvider.class
-)
-public class BatteryInfoCommand implements Runnable {
+public class VersionProvider implements CommandLine.IVersionProvider {
 
-    @Override
-    public void run() {
-        String batteryLevel = OperatingSystem.get()
-                .getBatteryInfoProvider()
-                .getBatteryLevel()
-                .orElse("Could not find battery information");
+    public static final String APP_NAME = "Senzu";
+    public static final String APP_VERSION = "v1.0.2";
 
-        System.out.println(batteryLevel);
+    public String[] getVersion() {
+        return new String[]{String.format("%s %s", APP_NAME, APP_VERSION)};
     }
 
 }
