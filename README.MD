@@ -10,8 +10,10 @@ A CLI tool to get the battery percentage
 
 ## Installing
 
-- Mac OS X - Homebrew 🍺
-    - Run `brew tap hakky54/senzu && brew install senzu`
+- Mac OS X & Linux - Homebrew 🍺
+    - Run `brew tap hakky54/homebrew-apps && brew install senzu`
+- Linux - Debian/Ubuntu (apt) 📦
+  - Run `sudo add-apt-repository ppa:hakky554/apps && sudo apt update && sudo apt install senzu`
 - Linux & Windows
     - Download the latest binary here: [Releases](https://github.com/Hakky54/senzu/releases)
 
